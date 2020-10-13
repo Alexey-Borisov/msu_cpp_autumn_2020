@@ -15,7 +15,7 @@ public:
         ptr = new char[max_size];
     }
     char* alloc(size_t size){
-        if(offset + size > max_size || size <= 0){
+        if(offset + size > max_size){
             return nullptr;
         } else {
             char *p = ptr + offset;
