@@ -8,7 +8,7 @@ class Allocator
     size_t offset = 0, max_size = 0;
 public:
     void make_allocator(size_t alloc_size){
-        if(ptr != nullptr || alloc_size == 0){
+        if(ptr != nullptr){
             return;
         }
 	max_size = alloc_size;
