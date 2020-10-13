@@ -30,6 +30,12 @@ void overflow_test(){
     assert(arr_1 != nullptr && arr_2 != nullptr && arr_3 == nullptr);
 }
 
+void alloc_befor_make_test(){
+    Allocator my_allocator;
+    int *arr_1 = (int *)my_allocator.alloc(sizeof(int));
+    assert(arr_1 == nullptr);
+}
+
 void reset_test(){
     Allocator my_allocator;
     my_allocator.make_allocator(10 * sizeof(int));
@@ -62,6 +68,7 @@ int main(){
     default_work_test();
     overflow_test();
     reset_test();
+    alloc_befor_make_test();
     some_allocators_test();
     std::cout << "All tests passed successfully :)" << std::endl;
     return 0;
