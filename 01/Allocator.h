@@ -1,6 +1,6 @@
 
-#ifndef CLASS_H
-#define CLASS_H
+#ifndef ALLOCATOR_H
+#define ALLOCATOR_H
 
 class Allocator
 {
@@ -31,4 +31,4 @@ public:
     }
 };
 
-#endif // CLASS_H
+#endif // ALLOCATOR_H
