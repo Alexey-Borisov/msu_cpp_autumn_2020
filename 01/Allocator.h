@@ -5,7 +5,7 @@
 class Allocator
 {
     char *ptr = nullptr;
-    size_t offset = 0, max_size;
+    size_t offset = 0, max_size = 0;
 public:
     void make_allocator(size_t alloc_size){
         if(ptr != nullptr){
