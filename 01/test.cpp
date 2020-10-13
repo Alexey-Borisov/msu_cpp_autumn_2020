@@ -30,7 +30,7 @@ void overflow_test(){
     assert(arr_1 != nullptr && arr_2 != nullptr && arr_3 == nullptr);
 }
 
-void alloc_befor_make_test(){
+void alloc_before_make_test(){
     Allocator my_allocator;
     int *arr_1 = (int *)my_allocator.alloc(sizeof(int));
     assert(arr_1 == nullptr);
