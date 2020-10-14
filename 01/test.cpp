@@ -68,7 +68,7 @@ int main(){
     default_work_test();
     overflow_test();
     reset_test();
-    alloc_befor_make_test();
+    alloc_before_make_test();
     some_allocators_test();
     std::cout << "All tests passed successfully :)" << std::endl;
     return 0;
