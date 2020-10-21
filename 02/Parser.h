@@ -4,7 +4,8 @@
 #define PARSER_H
 
 class TokenParser
-{   void (*StartHandler)() = nullptr;
+{   
+    void (*StartHandler)() = nullptr;
     void (*EndHandler)() = nullptr;
     void (*DigitTokenHandler)(std::string) = nullptr;
     void (*StringTokenHandler)(std::string) = nullptr;
