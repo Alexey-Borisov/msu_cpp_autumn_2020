@@ -1,17 +1,34 @@
 #include <string>
+#include <functional>
 
 #ifndef PARSER_H
 #define PARSER_H
 
 class TokenParser
-{   void (*StartHandler)() = nullptr;
-    void (*EndHandler)() = nullptr;
-    void (*DigitTokenHandler)(std::string&) = nullptr;
-    void (*StringTokenHandler)(std::string&) = nullptr;
+{
+    private:
+        std::function<void()> StartHandler = nullptr;
+        std::function<void()> EndHandler = nullptr;
+        std::function<void(std::string&)> DigitTokenHandler = nullptr;
+        std::function<void(std::string&)> StringTokenHandler = nullptr;
+        std::string word;
+        bool digit_flag = true;
+
+        void SelectFunction(){
+            if(word.empty()){
+                return;
+            }
+            if(digit_flag){
+                if(DigitTokenHandler != nullptr){
+                    DigitTokenHandler(word);
+                }
+            } else if(StringTokenHandler != nullptr){
+                StringTokenHandler(word);
+            }
+        }
+
     public:
         void Parse(const std::string &text){
-            std::string word;
-            bool digit_flag = true;
             if(StartHandler != nullptr){
                 StartHandler();
             }
@@ -19,15 +36,8 @@ class TokenParser
                 if(isspace(c)){
                     if(word.empty()){
                         continue;
-                    } else if(digit_flag){
-                        if(DigitTokenHandler != nullptr){
-                            DigitTokenHandler(word);
-                        }
-                    } else {
-                        if(StringTokenHandler != nullptr){
-                            StringTokenHandler(word);
-                        }
                     }
+                    SelectFunction();
                     digit_flag = true;
                     word = "";
                     continue;
@@ -37,35 +47,25 @@ class TokenParser
                 }
                 word += c;
             }
-            if(!word.empty()){
-                if(digit_flag){
-                    if(DigitTokenHandler != nullptr){
-                        DigitTokenHandler(word);
-                    }
-                } else {
-                    if(StringTokenHandler != nullptr){
-                        StringTokenHandler(word);
-                    }
-                }
-            }
+            SelectFunction();
             if(EndHandler != nullptr){
                 EndHandler();
             }
         }
 
-        void SetStartCallback(void (*user_function)(void)){
+        void SetStartCallback(std::function<void()> user_function){
             StartHandler = user_function;
         }
 
-        void SetEndCallback(void (*user_function)(void)){
+        void SetEndCallback(std::function<void()> user_function){
             EndHandler = user_function;
         }
 
-        void SetDigitTokenCallback(void (*user_function)(std::string&)){
+        void SetDigitTokenCallback(std::function<void(std::string&)> user_function){
             DigitTokenHandler = user_function;
         }
 
-        void SetStringTokenCallback(void (*user_function)(std::string&)){
+        void SetStringTokenCallback(std::function<void(std::string&)> user_function){
             StringTokenHandler = user_function;
         }
 };

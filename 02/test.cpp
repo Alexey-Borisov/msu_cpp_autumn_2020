@@ -18,7 +18,7 @@ void DigitTokenShift(std::string &word){
     text_after_parsing += " ";
 }
 
-/*Функция обработки токенов не числовых строк, переводящая все буквы в верхний регистр */ 
+/*Функция обработки токенов не числовых строк, переводящая все буквы в верхний регистр */
 void StringTokenToUpper(std::string &word){
     for(auto &c : word){
         c = toupper(c);
