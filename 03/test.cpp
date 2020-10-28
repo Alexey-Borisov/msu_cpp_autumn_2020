@@ -80,6 +80,27 @@ void TestOutOfRange(){
         catch_flag = true;
     }
     assert(catch_flag == true);
+
+    catch_flag = false;
+    try{
+        m_1[2][4];
+    }
+    catch(std::out_of_range& oor){
+        catch_flag = true;
+    }
+    assert(catch_flag == true);
+}
+
+void TestOutput(){
+    Matrix res(3, 4);
+    std::ifstream inf("test_matrix.txt");
+    inf >> res;
+    std::fstream fs_1("test_output.txt");
+    fs_1 << res;
+    Matrix m(3, 4);
+    std::fstream fs_2("test_output.txt");
+    fs_2 >> m;
+    assert(m == res);
 }
 
 int main(){
@@ -89,5 +110,6 @@ int main(){
     TestAdd();
     TestMulWithAssignment();
     TestOutOfRange();
+    TestOutput();
     std::cout << "All tests passed successfully :)\n";
 }
