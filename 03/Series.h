@@ -8,6 +8,7 @@ class Series
 private:
     size_t size = 0;
     int *buffer = nullptr;
+private:
     Series(){};
     Series(size_t buffer_size){
         size = buffer_size;
