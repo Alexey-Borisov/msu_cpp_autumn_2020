@@ -10,7 +10,6 @@ private:
     size_t n_cols = 0;
     size_t n_rows = 0;
     Series *buffer = nullptr;
-
 public:
     Matrix(size_t rows, size_t cols){
         n_rows = rows;
