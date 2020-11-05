@@ -6,9 +6,8 @@
 
 enum
 {
-    BASE = 10000, //основание системы счисления (степень десяти, можно варьировать от 10 до 10 000 включительно,
-                  //дальше начинает происходить переполнение типа int32_t при умножении)
-    BASE_EXP = 4  //степень десятки соответствующая основанию
+    BASE = 10000,
+    BASE_EXP = 4
 };
 
 class BigInt
@@ -128,9 +127,7 @@ BigInt::BigInt(const BigInt &other){
     sign = other.sign;
     buffer_size = other.buffer_size;
     buffer = new int32_t[buffer_size];
-    for(size_t i = 0; i < buffer_size; ++i){
-        buffer[i] = other.buffer[i];
-    }
+    std::copy(other.buffer, other.buffer + other.buffer_size, buffer);
 }
 
 BigInt::~BigInt(){
@@ -147,9 +144,7 @@ BigInt& BigInt::operator=(const BigInt &other){
     sign = other.sign;
     buffer_size = other.buffer_size;
     buffer = new int32_t[buffer_size];
-    for(size_t i = 0; i < buffer_size; ++i){
-        buffer[i] = other.buffer[i];
-    }
+    std::copy(other.buffer, other.buffer + other.buffer_size, buffer);
     return *this;
 }
 
