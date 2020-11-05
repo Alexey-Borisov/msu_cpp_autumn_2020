@@ -23,14 +23,15 @@ void TestStringConstructor(){
 }
 
 void TestOutput(){
-    BigInt a("12345678987654321");
-    BigInt b("-998976855323332");
-    BigInt answer_1, answer_2;
+    std::string str_1 = "12345670007654321";
+    std::string str_2 = "-998976855323332";
+    BigInt a(str_1), b(str_2);
+    std::string answer_1, answer_2;
     std::fstream fs("TestOutput.txt");
     fs << a << "\n" << b;
     fs.seekg(0);
     fs >> answer_1 >> answer_2;
-    assert(a == answer_1 && b == answer_2);
+    assert(str_1 == answer_1 && str_2 == answer_2);
 }
 
 void TestAdd(){
@@ -241,10 +242,14 @@ void TestCopyConstructorAndOperator(){
 
 void TestMoveConstructorAndOperator(){
     BigInt a("12345678987654321");
+    BigInt a_copy = a;
     BigInt b(std::move(a));
+    a = a_copy;
+    assert(b == a);
     BigInt c;
     c = std::move(a);
-    assert(b == a && c == a);
+    a = a_copy;
+    assert(c == a);
 }
 
 int main(){
