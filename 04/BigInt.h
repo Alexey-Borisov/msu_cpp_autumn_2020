@@ -12,11 +12,13 @@ enum
 
 class BigInt
 {
-public:
+private:
     char sign = 1;
     int32_t *buffer = nullptr;
     size_t buffer_size = 0;
-
+    friend BigInt abs(const BigInt &bigint);
+    friend void normalize(BigInt &bigint);
+public:
     BigInt(){}
     BigInt(const std::string &str);
     BigInt(const int &other);
@@ -61,17 +63,21 @@ public:
     BigInt operator-() const;
 
     friend std::ostream& operator<<(std::ostream& ostream, const BigInt &bigint);
-    friend void normalize(BigInt &bigint);
-    friend BigInt abs(const BigInt &bigint);
-};
+ };
 
 BigInt::BigInt(const std::string &str){
+    if(str == ""){
+        throw 1;
+    }
     int32_t digit_start = 0;
     if(str[0] == '-'){
         sign = -1;
         digit_start = 1;
     } else if(str[0] == '+'){
         digit_start = 1;
+    }
+    if(str == "-0"){
+        sign = 1;
     }
     int32_t digit_len = str.length() - digit_start;
     buffer_size = (digit_len - 1) / BASE_EXP + 1;

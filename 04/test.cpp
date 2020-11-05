@@ -263,6 +263,6 @@ int main(){
     TestCompare();
     TestCopyConstructorAndOperator();
     TestMoveConstructorAndOperator();
-    std::cout << "All tests passed successfully :)";
+    std::cout << "All tests passed successfully :)\n";
 }
 
