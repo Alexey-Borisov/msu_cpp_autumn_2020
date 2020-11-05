@@ -26,8 +26,8 @@ public:
     BigInt& operator=(const std::string &other);
     BigInt& operator=(const int &other);
 
-    BigInt(const BigInt &&other);
-    BigInt& operator=(const BigInt &&other);
+    BigInt(BigInt &&other);
+    BigInt& operator=(BigInt &&other);
 
     ~BigInt();
 
@@ -76,7 +76,7 @@ BigInt::BigInt(const std::string &str){
     int32_t digit_len = str.length() - digit_start;
     buffer_size = (digit_len - 1) / BASE_EXP + 1;
     buffer = new int32_t[buffer_size];
-    for(int i = 0; i < buffer_size; ++i){
+    for(size_t i = 0; i < buffer_size; ++i){
         buffer[i] = 0;
     }
     int32_t num = 0, idx = 0, cur_exp = 1;
@@ -125,7 +125,9 @@ BigInt::BigInt(const BigInt &other){
 }
 
 BigInt::~BigInt(){
-    delete[] buffer;
+    if(buffer != nullptr){
+        delete[] buffer;
+    }
 }
 
 BigInt& BigInt::operator=(const BigInt &other){
@@ -153,18 +155,20 @@ BigInt& BigInt::operator=(const int &other){
     return *this = bigint;
 }
 
-BigInt::BigInt(const BigInt &&other){
+BigInt::BigInt(BigInt &&other){
     //std::cout << "MoveConstructor\n";
     sign = other.sign;
     buffer_size = other.buffer_size;
     buffer = other.buffer;
+    other.buffer = nullptr;
 }
 
-BigInt& BigInt::operator=(const BigInt &&other){
+BigInt& BigInt::operator=(BigInt &&other){
     //std::cout << "MoveOperator\n";
     sign = other.sign;
     buffer_size = other.buffer_size;
     buffer = other.buffer;
+    other.buffer = nullptr;
     return *this;
 }
 
@@ -188,7 +192,7 @@ BigInt BigInt::operator+(const BigInt &other) const{
     res.buffer_size = mx.buffer_size + 1;
     res.buffer = new int32_t[res.buffer_size];
     size_t idx = 0, flag = 0;
-    for(idx; idx < mn.buffer_size; ++idx){
+    for(; idx < mn.buffer_size; ++idx){
         res.buffer[idx] = mx.buffer[idx] + mn.buffer[idx] + flag;
         flag = 0;
         if(res.buffer[idx] >= BASE){
@@ -196,7 +200,7 @@ BigInt BigInt::operator+(const BigInt &other) const{
             flag = 1;
         }
     }
-    for(idx; idx < mx.buffer_size; ++idx){
+    for(; idx < mx.buffer_size; ++idx){
         res.buffer[idx] = mx.buffer[idx] + flag;
         flag = 0;
         if(res.buffer[idx] >= BASE){
@@ -232,8 +236,9 @@ BigInt BigInt::operator-(const BigInt &other) const{
     BigInt res;
     res.buffer_size = buffer_size;
     res.buffer = new int32_t[res.buffer_size];
-    size_t idx = 0, flag = 0;
-    for(idx; idx < other.buffer_size; ++idx){
+    size_t idx = 0;
+    int32_t flag = 0;
+    for(; idx < other.buffer_size; ++idx){
         if(buffer[idx] >= other.buffer[idx] + flag){
             res.buffer[idx] = buffer[idx] - other.buffer[idx] - flag;
             flag = 0;
@@ -242,7 +247,7 @@ BigInt BigInt::operator-(const BigInt &other) const{
             flag = 1;
         }
     }
-    for(idx; idx < buffer_size; ++idx){
+    for(; idx < buffer_size; ++idx){
         if(buffer[idx] >= flag){
             res.buffer[idx] = buffer[idx] - flag;
             flag = 0;
@@ -281,9 +286,9 @@ BigInt BigInt::operator*(const BigInt &other) const{
         res.buffer[i] = 0;
     }
     size_t flag = 0, idx_1 = 0, idx_2 = 0;
-    for(idx_1; idx_1 < buffer_size; ++idx_1){
+    for(; idx_1 < buffer_size; ++idx_1){
         idx_2 = 0;
-        for(idx_2; idx_2 < other.buffer_size; ++idx_2){
+        for(; idx_2 < other.buffer_size; ++idx_2){
             res.buffer[idx_1 + idx_2] += buffer[idx_1] * other.buffer[idx_2] + flag;
             if(res.buffer[idx_1 + idx_2] >= BASE){
                 flag = res.buffer[idx_1 + idx_2] / BASE;
