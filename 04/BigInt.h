@@ -6,8 +6,8 @@
 
 enum
 {
-    BASE = 10,
-    BASE_EXP = 1
+    BASE = 10000,
+    BASE_EXP = 4
 };
 
 class BigInt
@@ -17,7 +17,7 @@ public:
     int32_t *buffer = nullptr;
     size_t buffer_size = 0;
 
-    BigInt(){};
+    BigInt(){}
     BigInt(const std::string &str);
     BigInt(const int &other);
 
