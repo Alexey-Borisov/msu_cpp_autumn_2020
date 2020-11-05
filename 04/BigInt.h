@@ -173,6 +173,9 @@ BigInt::BigInt(BigInt &&other){
 
 BigInt& BigInt::operator=(BigInt &&other){
     //std::cout << "MoveOperator\n";
+    if(this == &other){
+        return *this;
+    }
     sign = other.sign;
     buffer_size = other.buffer_size;
     if(buffer != nullptr){
