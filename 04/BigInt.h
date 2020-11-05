@@ -22,44 +22,44 @@ private:
 public:
     BigInt(){}
     BigInt(const std::string &str);
-    BigInt(const int &other);
+    BigInt(int other);
 
     BigInt(const BigInt &other);
     BigInt& operator=(const BigInt &other);
     BigInt& operator=(const std::string &other);
-    BigInt& operator=(const int &other);
+    BigInt& operator=(int other);
 
     BigInt(BigInt &&other);
     BigInt& operator=(BigInt &&other);
 
     ~BigInt();
 
-    BigInt operator+(const int &other) const;
+    BigInt operator+(int other) const;
     BigInt operator+(const BigInt &other) const;
 
-    BigInt operator-(const int &other) const;
+    BigInt operator-(int other) const;
     BigInt operator-(const BigInt &other) const;
 
-    BigInt operator*(const int &other) const;
+    BigInt operator*(int other) const;
     BigInt operator*(const BigInt &other) const;
 
     bool operator==(const BigInt &other) const;
-    bool operator==(const int &other) const;
+    bool operator==(int other) const;
 
     bool operator!=(const BigInt &other) const;
-    bool operator!=(const int &other) const;
+    bool operator!=(int other) const;
 
     bool operator<(const BigInt &other) const;
-    bool operator<(const int &other) const;
+    bool operator<(int other) const;
 
     bool operator<=(const BigInt &other) const;
-    bool operator<=(const int &other) const;
+    bool operator<=(int other) const;
 
     bool operator>(const BigInt &other) const;
-    bool operator>(const int &other) const;
+    bool operator>(int other) const;
 
     bool operator>=(const BigInt &other) const;
-    bool operator>=(const int &other) const;
+    bool operator>=(int other) const;
 
     BigInt operator-() const;
 
@@ -102,7 +102,7 @@ BigInt::BigInt(const std::string &str){
     }
 }
 
-BigInt::BigInt(const int &other){
+BigInt::BigInt(int other){
     if(other < 0){
         sign = -1;
     } else {
@@ -139,6 +139,9 @@ BigInt::~BigInt(){
 
 BigInt& BigInt::operator=(const BigInt &other){
     //std::cout << "CopyOperator\n";
+    if(this == &other){
+        return *this;
+    }
     if(buffer != nullptr){
         delete[] buffer;
     }
@@ -155,7 +158,7 @@ BigInt& BigInt::operator=(const std::string &other){
     return *this;
 }
 
-BigInt& BigInt::operator=(const int &other){
+BigInt& BigInt::operator=(int other){
     BigInt bigint(other);
     return *this = bigint;
 }
@@ -221,12 +224,12 @@ BigInt BigInt::operator+(const BigInt &other) const{
     return res;
 }
 
-BigInt BigInt::operator+(const int &other) const{
+BigInt BigInt::operator+(int other) const{
     BigInt bigint(other);
     return *this + bigint;
 }
 
-BigInt operator+(const int &left, const BigInt &right){
+BigInt operator+(int left, const BigInt &right){
     BigInt bigint(left);
     return bigint + right;
 }
@@ -268,12 +271,12 @@ BigInt BigInt::operator-(const BigInt &other) const{
     return res;
 }
 
-BigInt BigInt::operator-(const int &other) const{
+BigInt BigInt::operator-(int other) const{
     BigInt bigint(other);
     return *this - bigint;
 }
 
-BigInt operator-(const int &left, const BigInt &right){
+BigInt operator-(int left, const BigInt &right){
     BigInt bigint(left);
     return bigint - right;
 }
@@ -320,12 +323,12 @@ BigInt BigInt::operator*(const BigInt &other) const{
     return res;
 }
 
-BigInt BigInt::operator*(const int &other) const{
+BigInt BigInt::operator*(int other) const{
     BigInt bigint(other);
     return (*this) * bigint;
 }
 
-BigInt operator*(const int &left, const BigInt &right){
+BigInt operator*(int left, const BigInt &right){
     BigInt bigint(left);
     return bigint * right;
 }
@@ -342,12 +345,12 @@ bool BigInt::operator==(const BigInt &other) const{
     return true;
 }
 
-bool BigInt::operator==(const int &other) const{
+bool BigInt::operator==(int other) const{
     BigInt bigint(other);
     return *this == bigint;
 }
 
-bool operator==(const int &left, const BigInt &right){
+bool operator==(int left, const BigInt &right){
     BigInt bigint(left);
     return bigint == right;
 }
@@ -356,12 +359,12 @@ bool BigInt::operator!=(const BigInt &other) const{
     return !(*this == other);
 }
 
-bool BigInt::operator!=(const int &other) const{
+bool BigInt::operator!=(int other) const{
     BigInt bigint(other);
     return *this != bigint;
 }
 
-bool operator!=(const int &left, const BigInt &right){
+bool operator!=(int left, const BigInt &right){
     BigInt bigint(left);
     return bigint != right;
 }
@@ -389,12 +392,12 @@ bool BigInt::operator<(const BigInt &other) const{
     return false;
 }
 
-bool BigInt::operator<(const int &other) const{
+bool BigInt::operator<(int other) const{
     BigInt bigint(other);
     return *this < bigint;
 }
 
-bool operator<(const int &left, const BigInt &right){
+bool operator<(int left, const BigInt &right){
     BigInt bigint(left);
     return bigint < right;
 }
@@ -403,12 +406,12 @@ bool BigInt::operator<=(const BigInt &other) const{
     return *this < other || *this == other;
 }
 
-bool BigInt::operator<=(const int &other) const{
+bool BigInt::operator<=(int other) const{
     BigInt bigint(other);
     return *this <= bigint;
 }
 
-bool operator<=(const int &left, const BigInt &right){
+bool operator<=(int left, const BigInt &right){
     BigInt bigint(left);
     return bigint <= right;
 }
@@ -420,12 +423,12 @@ bool BigInt::operator>(const BigInt &other) const{
     return !(*this < other);
 }
 
-bool BigInt::operator>(const int &other) const{
+bool BigInt::operator>(int other) const{
     BigInt bigint(other);
     return *this > bigint;
 }
 
-bool operator>(const int &left, const BigInt &right){
+bool operator>(int left, const BigInt &right){
     BigInt bigint(left);
     return bigint > right;
 }
@@ -434,12 +437,12 @@ bool BigInt::operator>=(const BigInt &other) const{
     return *this > other || *this == other;
 }
 
-bool BigInt::operator>=(const int &other) const{
+bool BigInt::operator>=(int other) const{
     BigInt bigint(other);
     return *this >= bigint;
 }
 
-bool operator>=(const int &left, const BigInt &right){
+bool operator>=(int left, const BigInt &right){
     BigInt bigint(left);
     return bigint >= right;
 }
