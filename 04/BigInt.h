@@ -6,8 +6,8 @@
 
 enum
 {
-    BASE = 1000,
-    BASE_EXP = 3
+    BASE = 10,
+    BASE_EXP = 1
 };
 
 class BigInt
@@ -90,7 +90,9 @@ BigInt::BigInt(const std::string &str){
             idx++;
         }
     }
-    buffer[idx] = num;
+    if(num > 0){
+        buffer[idx] = num;
+    }
 }
 
 BigInt::BigInt(const int &other){
@@ -167,6 +169,9 @@ BigInt& BigInt::operator=(BigInt &&other){
     //std::cout << "MoveOperator\n";
     sign = other.sign;
     buffer_size = other.buffer_size;
+    if(buffer != nullptr){
+        delete[] buffer;
+    }
     buffer = other.buffer;
     other.buffer = nullptr;
     return *this;
@@ -305,7 +310,9 @@ BigInt BigInt::operator*(const BigInt &other) const{
             flag = 0;
         }
     }
-    res.buffer[idx_1 + idx_2] += flag;
+    if(flag != 0){
+        res.buffer[idx_1 + idx_2] += flag;
+    }
     normalize(res);
     return res;
 }
