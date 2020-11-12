@@ -56,23 +56,6 @@ private:
     std::ostream& out_ = std::cout;
 };
 
-/*Error convert(const std::string text, uint64_t& num){
-    if(text == ""){
-        return Error::CorruptedArchive;
-    }
-    uint64_t num_prev = 0;
-    for(auto &c : text){
-        if(c < '0' || c > '9'){
-            return Error::CorruptedArchive;
-        }
-        num_prev = num;
-        num = 10 * num + c - '0';
-        if(num_prev > num){
-            return Error::CorruptedArchive;
-        }
-    }
-    return Error::NoError;
-}*/
 
 class Deserializer
 {
@@ -144,7 +127,6 @@ public:
     }
 
     std::istream& in_ = std::cin;
-    friend Error convert(const std::string text, uint64_t& num);
 };
 
 #endif //SERIALIZER_H
