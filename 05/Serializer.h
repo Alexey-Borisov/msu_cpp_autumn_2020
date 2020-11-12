@@ -29,14 +29,14 @@ public:
 
 private:
     template <class T, class... ArgsT>
-    Error proccess(T&& val, ArgsT&&... args){
+    Error proccess(T val, ArgsT... args){
         handler(val);
         out_ << " ";
         return proccess(std::forward<ArgsT>(args)...);
     }
 
     template <class T>
-    Error proccess(T&& val){
+    Error proccess(T val){
         handler(val);
         return Error::NoError;
     }
@@ -56,7 +56,7 @@ private:
     std::ostream& out_ = std::cout;
 };
 
-Error convert(const std::string text, uint64_t& num){
+/*Error convert(const std::string text, uint64_t& num){
     if(text == ""){
         return Error::CorruptedArchive;
     }
@@ -72,7 +72,7 @@ Error convert(const std::string text, uint64_t& num){
         }
     }
     return Error::NoError;
-}
+}*/
 
 class Deserializer
 {
@@ -113,9 +113,21 @@ public:
 
     Error handler(uint64_t& val){
         std::string text;
+        size_t p = 0;
         in_ >> text;
         val = 0;
-        return convert(text, val);
+        if(text == "" || text[0] == '-' || text[0] == '+'){
+            return Error::CorruptedArchive;
+        }
+        try{
+            val = std::stoull(text, &p, 10);
+        } catch(std::logic_error &err) {
+            return Error::CorruptedArchive;
+        } 
+        if(p != text.length()){
+            return Error::CorruptedArchive;
+        }
+        return Error::NoError;
     }
 
     Error handler(bool& val){
