@@ -32,7 +32,7 @@ private:
     Error proccess(T val, ArgsT... args){
         handler(val);
         out_ << " ";
-        return proccess(std::forward<ArgsT>(args)...);
+        return proccess(args...);
     }
 
     template <class T>
@@ -81,7 +81,7 @@ public:
         if(error == Error::CorruptedArchive){
             return error;
         }
-        return proccess(std::forward<ArgsT&>(args)...);
+        return proccess(args...);
     }
 
     template <class T>
