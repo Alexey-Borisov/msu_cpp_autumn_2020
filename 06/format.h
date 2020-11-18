@@ -15,14 +15,14 @@ public:
 };
 
 template <class T>
-void get_args(std::string *arr, T cur_arg){
+void get_args(std::string *arr, T& cur_arg){
     std::stringstream ss;
     ss << cur_arg;
     *arr = ss.str();
 }
 
 template <class T, class... ArgsT>
-void get_args(std::string *arr, T cur_arg, ArgsT... args){
+void get_args(std::string *arr, T& cur_arg, ArgsT&... args){
     std::stringstream ss;
     ss << cur_arg;
     *arr = ss.str();
