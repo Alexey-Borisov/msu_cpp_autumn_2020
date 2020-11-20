@@ -15,14 +15,14 @@ void ArgOutOfRangeTest(){
     bool catch_flag = false;
     try {
         text = format("{1} + {2} = {0}", "3", 1.5); 
-    } catch(FormatError &err){
+    } catch(const FormatError &err){
         catch_flag = true;
     }
     assert(catch_flag);
     catch_flag = false;
     try {
         text = format("{1} + {-1} = {0}", "1234", 617.0);
-    } catch(FormatError &err){
+    } catch(const FormatError &err){
         catch_flag = true;
     }
     assert(catch_flag);
@@ -33,14 +33,14 @@ void InvalidArgTest(){
     bool catch_flag = false;
     try {
         text = format("My name is {Alex}, {1}", "Alex", 7);
-    } catch(FormatError &err){
+    } catch(const FormatError &err){
         catch_flag = true;
     }
     assert(catch_flag);
     catch_flag = false;
     try {
         text = format("My name is {0a}, {1}", "Alex", 7);
-    } catch(FormatError &err){
+    } catch(const FormatError &err){
         catch_flag = true;
     }
     assert(catch_flag);
@@ -51,28 +51,28 @@ void UnpairedBracketsTest(){
     bool catch_flag = false;
     try {
         text = format("{2} * {0} == {1} * {3", 2, "3", 6, "4");
-    } catch(FormatError &err){
+    } catch(const FormatError &err){
         catch_flag = true;
     }
     assert(catch_flag);
     catch_flag = false;
     try {
         text = format("{2} * {0} == {1} * {3}}", 2, "3", 6, "4");
-    } catch(FormatError &err){
+    } catch(const FormatError &err){
         catch_flag = true;
     }
     assert(catch_flag);    
     catch_flag = false;
     try {
         text = format("2} * {0} == {1} * {3", 2, "3", 6, "4");
-    } catch(FormatError &err){
+    } catch(const FormatError &err){
         catch_flag = true;
     }
     assert(catch_flag);
     catch_flag = false;
     try {
         text = format("{{2} * {0} == {1} * {3", 2, "3", 6, "4");
-    } catch(FormatError &err){
+    } catch(const FormatError &err){
         catch_flag = true;
     }
     assert(catch_flag);
