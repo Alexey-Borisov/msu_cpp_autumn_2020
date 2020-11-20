@@ -9,7 +9,7 @@ class FormatError : std::exception
 private:
     std::string m_error;
 public:
-    FormatError(std::string error) 
+    FormatError(const std::string& error) 
         : m_error(error)
     {
     }
