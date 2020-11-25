@@ -12,13 +12,18 @@ public:
     Vector(const allocator_type& alloc = allocator_type());
     Vector(size_t size, const allocator_type& alloc = allocator_type());
     Vector(size_t size, const T& init, const allocator_type& alloc = allocator_type());
-    Vector(Vector<T>& init);
+    Vector(Vector<T, allocator_type>& init);
     ~Vector();
 
+    Vector(Vector<T, allocator_type>&& init);
+    Vector<T, allocator_type>& operator=(const Vector<T, allocator_type>& x);
+    Vector<T, allocator_type>& operator=(Vector<T, allocator_type>&& x);
+    
     T& operator[](const size_t idx);
     const T& operator[](const size_t idx) const;
 
     void push_back(const T& val);
+    void push_back(T&& val);
     template <class... Args>
     void emplace_back(Args&&... args);
     void pop_back();
@@ -34,13 +39,12 @@ public:
 
     size_t size() const ;
     size_t capacity() const ;
-
+private:
     T* _buffer = nullptr;
     Iterator<T> _begin;
     Iterator<T> _end;
     Iterator<T> _real_end;
     allocator_type _alloc;
-
 };
 
 template <class T, class allocator_type>
@@ -65,7 +69,7 @@ Vector<T, allocator_type>::Vector(size_t size, const T& init, const allocator_ty
 }
 
 template <class T, class allocator_type>
-Vector<T, allocator_type>::Vector(Vector<T>& init){
+Vector<T, allocator_type>::Vector(Vector<T, allocator_type>& init){
     size_t size = init._end - init._begin;
     _alloc = init._alloc;
     _buffer = _alloc.allocate(size);
@@ -78,6 +82,37 @@ Vector<T, allocator_type>::Vector(Vector<T>& init){
 template <class T, class allocator_type>
 Vector<T, allocator_type>::~Vector(){
     _alloc.deallocate(_buffer);
+}
+
+template <class T, class allocator_type>
+Vector<T, allocator_type>::Vector(Vector<T, allocator_type>&& init){
+    _buffer = init._buffer;
+    _begin = init._begin;
+    _end = init._end;
+    _real_end = init._real_end;
+    _alloc = init._alloc;    
+}
+
+template <class T, class allocator_type>
+Vector<T, allocator_type>& Vector<T, allocator_type>::operator=(const Vector<T, allocator_type>& x){
+    _alloc.deallocate(_buffer);
+    size_t size = x._end - x._begin;
+    _buffer = _alloc.allocate(size);
+    std::copy(_begin, _end, _buffer);
+    _begin = Iterator<T>(_buffer);
+    _end = _begin + size;
+    _real_end = _end;
+    return *this;
+}
+
+template <class T, class allocator_type>
+Vector<T, allocator_type>& Vector<T, allocator_type>::operator=(Vector<T, allocator_type>&& x){
+    _alloc.deallocate(_buffer);
+    _buffer = x._buffer;
+    _begin = x._begin;
+    _end = x._end;
+    _real_end = x._real_end;
+    return *this;
 }
 
 template <class T, class allocator_type>
@@ -96,6 +131,15 @@ void Vector<T, allocator_type>::push_back(const T& val){
         this->reserve(2 * (_end - _begin));
     }
     *_end = val;
+    ++_end;
+}
+
+template <class T, class allocator_type>
+void Vector<T, allocator_type>::push_back(T&& val){
+    if(_end == _real_end){
+        this->reserve(2 * (_end - _begin));
+    }    
+    *_end = std::move(val);
     ++_end;
 }
 
