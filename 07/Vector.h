@@ -70,9 +70,6 @@ Vector<T, allocator_type>::Vector(Vector<T>& init){
     _alloc = init._alloc;
     _buffer = _alloc.allocate(size);
     std::copy(_begin, _end, Iterator<T>(_buffer));
-    /*for(size_t i = 0; i < size; ++i){
-        _buffer[i] = init[i];
-    }*/
      _begin = Iterator<T>(_buffer);
     _end = _begin + size;
     _real_end = _end;
@@ -80,7 +77,7 @@ Vector<T, allocator_type>::Vector(Vector<T>& init){
 
 template <class T, class allocator_type>
 Vector<T, allocator_type>::~Vector(){
-    _alloc.deallocate(_buffer, _real_end - _begin);
+    _alloc.deallocate(_buffer);
 }
 
 template <class T, class allocator_type>
@@ -132,7 +129,7 @@ void Vector<T, allocator_type>::clear(){
 
 template <class T, class allocator_type>
 void Vector<T, allocator_type>::resize(size_t new_size){
-    if(new_size > _end - _begin){
+    if(new_size > static_cast<size_t>(_end - _begin)){
         this->reserve(new_size);
     }
     _end = _begin + new_size;
@@ -140,14 +137,14 @@ void Vector<T, allocator_type>::resize(size_t new_size){
 
 template <class T, class allocator_type>
 void Vector<T, allocator_type>::reserve(size_t new_capacity){
-    if(new_capacity > _real_end - _begin){
+    if(new_capacity > static_cast<size_t>(_real_end - _begin)){
         T* tmp = _buffer;
         size_t size = _end - _begin;
         _buffer = _alloc.allocate(new_capacity);
         for(size_t i = 0; i < size; ++i){
             _buffer[i] = tmp[i];
         }
-        _alloc.deallocate(tmp, size);
+        _alloc.deallocate(tmp);
         _begin = Iterator<T>(_buffer);
         _end = _begin + size;
         _real_end = _begin + new_capacity;

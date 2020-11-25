@@ -9,7 +9,7 @@ public:
     Allocator() = default;
     ~Allocator() = default;
     T* allocate(size_t size);
-    void deallocate(T* ptr, size_t size);
+    void deallocate(T* ptr);
 };
 
 template <class T>
@@ -18,7 +18,7 @@ T* Allocator<T>::allocate(size_t size){
 }
 
 template <class T>
-void Allocator<T>::deallocate(T* ptr, size_t size){
+void Allocator<T>::deallocate(T* ptr){
     delete[] ptr;
 }
 

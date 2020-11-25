@@ -18,6 +18,7 @@ public:
     Iterator<T> operator-(int32_t val) const;
     Iterator<T> operator++();
     Iterator<T> operator--();
+    Iterator<T>& operator=(const Iterator<T>& it);
 
     T& operator*();
     const T& operator*() const;
@@ -84,6 +85,12 @@ Iterator<T> Iterator<T>::operator++(){
 template <class T>
 Iterator<T> Iterator<T>::operator--(){
     return --_ptr;
+}
+
+template <class T>
+Iterator<T>& Iterator<T>::operator=(const Iterator<T>& it){
+    _ptr = it._ptr;
+    return *this;
 }
 
 template <class T>

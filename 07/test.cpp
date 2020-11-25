@@ -5,7 +5,7 @@
 #include "Vector.h"
 
 void DefaultWorkTest(){
-    Vector<int> v(5, 10);
+    Vector<int32_t> v(5, 10);
     v.push_back(15);
     v.push_back(20);
     assert(v.size() == 7 && v[4] == 10
@@ -15,7 +15,7 @@ void DefaultWorkTest(){
 }
 
 void TestIndexation(){
-    Vector<int> v(4);
+    Vector<size_t> v(4);
     for(size_t i = 0; i < v.size(); ++i){
         v[i] = i;
     }
@@ -33,15 +33,15 @@ void TestPushBack(){
 }
 
 void TestPopBack(){
-    Vector<int> v(5, 3);
+    Vector<int32_t> v(5, 3);
     v.pop_back();
     v.pop_back();
     assert(v.size() == 3);
 }
 
 void TestEmplaceBack(){
-    std::pair<std::string, int> p = {"HAHA", 42};
-    Vector<std::pair<std::string, int>> v(10, p);
+    std::pair<std::string, int32_t> p = {"HAHA", 42};
+    Vector<std::pair<std::string, int32_t>> v(10, p);
     v.emplace_back("No plz", 100);
     v.emplace_back("Nooooo", 1000);
     assert(v[10].first == "No plz" && v[10].second == 100
@@ -50,7 +50,7 @@ void TestEmplaceBack(){
 }
 
 void TestEmpty(){
-    Vector<int> v(2);
+    Vector<int32_t> v(2);
     assert(!v.empty());
     v.pop_back();
     v.pop_back();
@@ -58,7 +58,7 @@ void TestEmpty(){
 }
 
 void TestSize(){
-    Vector<int> v(42);
+    Vector<int32_t> v(42);
     assert(v.size() == 42);
     v.pop_back();
     assert(v.size() == 41);
@@ -69,15 +69,15 @@ void TestSize(){
 }
 
 void TestClear(){
-    Vector<int> v(42);
+    Vector<int32_t> v(42);
     assert(!v.empty());
     v.clear();
     assert(v.empty() && v.size() == 0);
 }
 
 void TestIteration(){
-    Vector<int> v(42, 0);
-    int32_t val = 0;
+    Vector<size_t> v(42, 0);
+    size_t val = 0;
     for(auto it = v.begin(); it != v.end(); ++it){
         *it = val;
         ++val;
@@ -93,14 +93,14 @@ void TestIteration(){
         ++val;
     }
     val = 0;
-    for(int32_t i = v.size() - 1; i >= 0; --i){
+    for(ssize_t i = v.size() - 1; i >= 0; --i){
         assert(v[i] == val);
         ++val;
     }
 }
 
 void TestResize(){
-    Vector<int> v(42);
+    Vector<int32_t> v(42);
     v.resize(100);
     assert(v.size() == 100);
     v.resize(10);
@@ -108,7 +108,7 @@ void TestResize(){
 }
 
 void TestReserve(){
-    Vector<int> v(42);
+    Vector<int32_t> v(42);
     v.reserve(13);
     assert(v.capacity() == 42);
     v.reserve(100);
@@ -116,7 +116,7 @@ void TestReserve(){
 }
 
 void TestCapacity(){
-    Vector<int> v(42);
+    Vector<int32_t> v(42);
     assert(v.capacity() == 42);
     v.push_back(666);
     assert(v.capacity() == 2 * 42);
